@@ -1,26 +1,43 @@
-<%- include('partials/header_fortnite')  %>
+<%- include('partials/header_fortnite') %>
 
-<main class="characters-main-section">
-    <h1 id="characters-title">Personages</h1>
-    <article class="search-container">
-        <input type="text" placeholder="Zoeken..." name="search">
-        <button type="submit">
-            <img src="./assets/Images/SearchIcon-SB.png" alt="Search Icon">
-        </button>
-    </article>
-    <article class="character-container">
-        <% characters.forEach(character => { %>
-            <article class="character">
-                <a href="character_detail">
-                    <img src="<%= character.images.icon %>" alt="<%= character.name %>">
-                    <p>
-                        <%= character.name %>
-                    </p>
-                </a>
-            </article>
-        <% }); %>
-    </article>
-</main>
+    <main class="characters-main-section">
+        <h1 id="characters-title">Personages</h1>
+        <article class="search-container">
+            <input type="text" id="search" placeholder="Zoeken..." name="search">
+            <button type="submit">
+                <img src="./assets/Images/SearchIcon-SB.png" alt="Search Icon">
+            </button>
+        </article>
+        <article class="character-container" id="character-container">
+            <% characters.forEach(character=> { %>
+                <article class="character">
+                    <a href="character_detail">
+                        <img src="<%= character.images.icon %>" alt="<%= character.name %>">
+                        <p>
+                            <%= character.name %>
+                        </p>
+                    </a>
+                </article>
+                <% }); %>
+        </article>
+    </main>
 
+    <%- include('partials/footer') %>
 
-<%- include('partials/footer') %>
+        <script>
+            document.getElementById('search').addEventListener('input', function (e) {
+                var searchValue = e.target.value.trim().toLowerCase();
+                var characters = document.querySelectorAll('.character');
+                var displayedNames = []; // Array to keep track of displayed character names
+                characters.forEach(function (character) {
+                    var name = character.querySelector('p').textContent.trim().toLowerCase();
+                    if (name.includes(searchValue) && !displayedNames.includes(name)) { // Check if character matches searchValue and name is not already displayed
+                        character.style.display = 'block';
+                        displayedNames.push(name); // Add name to displayedNames array
+                    } else {
+                        character.style.display = 'none';
+                    }
+                });
+            });
+
+        </script>
